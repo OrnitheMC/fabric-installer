@@ -17,7 +17,9 @@ public class OptionsTab {
 		//pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 		pane.add(confirmButton);
 		confirmButton.addActionListener(e -> {
-			updateGameVersions(newMetaURL.getText(),handlers);
+			Reference.metaServerUrl = newMetaURL.getText();
+			updateGameVersions(handlers);
+			updateGameVersions(handlers);
 		});
 		pane.add(newMetaURL);
 		newMetaURL.setText(Reference.metaServerUrl);
@@ -25,15 +27,16 @@ public class OptionsTab {
 		return pane;
 	}
 
-	public void updateGameVersions(String url,List<Handler> handlers){
+	public void updateGameVersions(List<Handler> handlers){
 		for(int i = 0; 1 <= handlers.size(); i++){
-			Reference.metaServerUrl = url;
 			Main.GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
+
 			try {
 				Main.GAME_VERSION_META.load();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
+
 			handlers.get(i).gameVersionComboBox.removeAllItems();
 
 			for (MetaHandler.GameVersion version : Main.GAME_VERSION_META.getVersions()) {
@@ -41,6 +44,26 @@ public class OptionsTab {
 			}
 
 			handlers.get(i).gameVersionComboBox.setSelectedIndex(0);
+		}
+	}
+
+	public void updateLoaderVersions(List<Handler> handlers){
+		for(int i = 0; 1 <= handlers.size(); i++){
+			Main.LOADER_META =  new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
+
+			try {
+				Main.LOADER_META.load();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+			handlers.get(i).loaderVersionComboBox.removeAllItems();
+
+			for (MetaHandler.GameVersion version : Main.LOADER_META.getVersions()) {
+				handlers.get(i).loaderVersionComboBox.addItem(version.getVersion());
+			}
+
+			handlers.get(i).loaderVersionComboBox.setSelectedIndex(0);
 		}
 	}
 }

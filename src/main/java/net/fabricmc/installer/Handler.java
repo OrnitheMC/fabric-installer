@@ -50,7 +50,7 @@ public abstract class Handler implements InstallerProgress {
 	public JButton buttonInstall;
 
 	public JComboBox<String> gameVersionComboBox;
-	private JComboBox<String> loaderVersionComboBox;
+	public JComboBox<String> loaderVersionComboBox;
 	public JTextField installLocation;
 	public JButton selectFolderButton;
 	public JLabel statusLabel;
