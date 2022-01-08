@@ -33,6 +33,7 @@ public class Main {
 	public static MetaHandler LOADER_META;
 
 	public static final List<Handler> HANDLERS = new ArrayList<>();
+	public static final OptionsTab OPTIONS_TAB = new OptionsTab();
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Loading Fabric Installer: " + Main.class.getPackage().getImplementationVersion());
