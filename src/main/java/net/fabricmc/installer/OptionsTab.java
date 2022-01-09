@@ -19,7 +19,7 @@ public class OptionsTab {
 		confirmButton.addActionListener(e -> {
 			Reference.metaServerUrl = newMetaURL.getText();
 			updateGameVersions(handlers);
-			updateGameVersions(handlers);
+			updateLoaderVersions(handlers);
 		});
 		pane.add(newMetaURL);
 		newMetaURL.setText(Reference.metaServerUrl);
@@ -40,6 +40,9 @@ public class OptionsTab {
 			handlers.get(i).gameVersionComboBox.removeAllItems();
 
 			for (MetaHandler.GameVersion version : Main.GAME_VERSION_META.getVersions()) {
+				if (!handlers.get(i).snapshotCheckBox.isSelected() && !version.isStable()) {
+					continue;
+				}
 				handlers.get(i).gameVersionComboBox.addItem(version.getVersion());
 			}
 
