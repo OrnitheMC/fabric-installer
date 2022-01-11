@@ -45,7 +45,9 @@ public class Main {
 		String command = argumentParser.getCommand().orElse(null);
 
 		//Can be used if you wish to re-host or provide custom versions. Ensure you include the trailing /
-		argumentParser.ifPresent("metaurl", s -> Reference.metaServerUrl = s);
+		argumentParser.ifPresent("metaurl", s -> {
+			Reference.metaServerUrl = s; Reference.startingMetaServerUrl = s;
+		});
 
 		GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
 		LOADER_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
