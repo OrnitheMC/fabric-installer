@@ -1,6 +1,7 @@
 package net.fabricmc.installer;
 
 import net.fabricmc.installer.util.MetaHandler;
+import net.fabricmc.installer.util.MetaReloader;
 import net.fabricmc.installer.util.Reference;
 
 import javax.swing.*;
@@ -24,67 +25,15 @@ public class OptionsTab {
 
 		pane.add(confirmButton);
 		confirmButton.addActionListener(e -> {
-			System.out.println(handlers.size());
 			Reference.metaServerUrl = newMetaURL.getText();
-			updateMeta(handlers);
+			if (MetaReloader.updateMeta(handlers)) {
+				System.out.println("Error");
+			} else {
+				System.out.println("Success");
+			}
 		});
 
 		return pane;
 	}
 
-	public void updateMeta(List<Handler> handlers) {
-		Main.GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
-		Main.LOADER_META =  new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
-
-		try{
-			Main.GAME_VERSION_META.load();
-			Main.LOADER_META.load();
-		}catch (IOException exception){
-			exception.printStackTrace();
-
-			Reference.metaServerUrl = Reference.startingMetaServerUrl;
-
-			Main.GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
-			Main.LOADER_META =  new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
-
-			try{
-				Main.GAME_VERSION_META.load();
-				Main.LOADER_META.load();
-			}catch (IOException exception1){
-				exception.printStackTrace();
-			}
-
-		}finally {
-			updateGameVersions(handlers);
-			updateLoaderVersions(handlers);
-		}
-
-	}
-
-	public void updateGameVersions(List<Handler> handlers){
-		for(int i = 0; i <= handlers.size() - 1; i++){
-			handlers.get(i).gameVersionComboBox.removeAllItems();
-
-			for (MetaHandler.GameVersion version : Main.GAME_VERSION_META.getVersions()) {
-				if (!handlers.get(i).snapshotCheckBox.isSelected() && !version.isStable()) {
-					continue;
-				}
-				handlers.get(i).gameVersionComboBox.addItem(version.getVersion());
-			}
-
-			handlers.get(i).gameVersionComboBox.setSelectedIndex(0);
-		}
-	}
-
-	public void updateLoaderVersions(List<Handler> handlers){
-		for(int i = 0; i <= handlers.size() - 1; i++){
-			handlers.get(i).loaderVersionComboBox.removeAllItems();
-
-			for (MetaHandler.GameVersion version : Main.LOADER_META.getVersions()) {
-				handlers.get(i).loaderVersionComboBox.addItem(version.getVersion());
-			}
-
-			handlers.get(i).loaderVersionComboBox.setSelectedIndex(0);
-		}
-	}
 }
