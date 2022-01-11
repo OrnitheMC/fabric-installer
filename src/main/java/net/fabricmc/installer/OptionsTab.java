@@ -33,15 +33,15 @@ public class OptionsTab {
 	}
 
 	public void updateGameVersions(List<Handler> handlers){
+		Main.GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
+
+		try {
+			Main.GAME_VERSION_META.load();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
 		for(int i = 0; i <= handlers.size() - 1; i++){
-			Main.GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
-
-			try {
-				Main.GAME_VERSION_META.load();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-
 			handlers.get(i).gameVersionComboBox.removeAllItems();
 
 			for (MetaHandler.GameVersion version : Main.GAME_VERSION_META.getVersions()) {
@@ -56,15 +56,15 @@ public class OptionsTab {
 	}
 
 	public void updateLoaderVersions(List<Handler> handlers){
+		Main.LOADER_META =  new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
+
+		try {
+			Main.LOADER_META.load();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
 		for(int i = 0; i <= handlers.size() - 1; i++){
-			Main.LOADER_META =  new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));
-
-			try {
-				Main.LOADER_META.load();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-
 			handlers.get(i).loaderVersionComboBox.removeAllItems();
 
 			for (MetaHandler.GameVersion version : Main.LOADER_META.getVersions()) {
