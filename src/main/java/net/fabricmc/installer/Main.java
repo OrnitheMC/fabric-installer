@@ -33,6 +33,7 @@ public class Main {
 	public static MetaHandler LOADER_META;
 
 	public static final List<Handler> HANDLERS = new ArrayList<>();
+	public static final OptionsTab OPTIONS_TAB = new OptionsTab();
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Loading Fabric Installer: " + Main.class.getPackage().getImplementationVersion());
@@ -44,7 +45,9 @@ public class Main {
 		String command = argumentParser.getCommand().orElse(null);
 
 		//Can be used if you wish to re-host or provide custom versions. Ensure you include the trailing /
-		argumentParser.ifPresent("metaurl", s -> Reference.metaServerUrl = s);
+		argumentParser.ifPresent("metaurl", s -> {
+			Reference.metaServerUrl = s; Reference.startingMetaServerUrl = s;
+		});
 
 		GAME_VERSION_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/game"));
 		LOADER_META = new MetaHandler(Reference.getMetaServerEndpoint("v2/versions/loader"));

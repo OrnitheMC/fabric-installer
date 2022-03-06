@@ -75,5 +75,6 @@ public class InstallerGui extends JFrame {
 	private void initComponents() {
 		contentPane = new JTabbedPane(JTabbedPane.TOP);
 		Main.HANDLERS.forEach(handler -> contentPane.addTab(Utils.BUNDLE.getString("tab." + handler.name().toLowerCase(Locale.ROOT)), handler.makePanel(this)));
+		contentPane.add("Options", Main.OPTIONS_TAB.makePanel(Main.HANDLERS));
 	}
 }
